@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Walentynki ❤️</title>
+<style>
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+.container {
+    text-align: center;
+}
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, margin-left 0.2s;
+}
+#yes {
+    background-color: #ff4d6d;
+    color: white;
+}
+#no {
+    background-color: #cccccc;
+}
+#mis {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <img src="./miś.gif" alt="" id="mis">
+    <h1>Zostaniesz moją walentynką? ❤️</h1>
+    <div class="buttons">
+        <button id="yes">Tak</button>
+        <button id="no">Nie</button>
+    </div>
+</div>
+<script>
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+
+    const noTexts = [
+        "Czy jesteś pewna?",
+        "Ale czy na pewno?",
+        "To twoja ostateczna odpowiedź?",
+        "Zastanów się jeszcze",
+        "Serio?",
+        "No weź..."
+    ];
+
+    let noClickCount = 0;
+    let scale = 1;
+    let growth = 0.3; 
+
+    function updateNoPosition() {
+        const yesRect = yesBtn.getBoundingClientRect();
+        noBtn.style.marginLeft = `${20 + yesRect.width / 2}px`;
+    }
+
+    noBtn.addEventListener("click", () => {
+        if (noBtn.disabled) return;
+
+        noBtn.textContent = noTexts[noClickCount % noTexts.length];
+        noClickCount++;
+
+        scale += growth;
+        growth += 0.5; 
+        yesBtn.style.transform = `scale(${scale})`;
+
+        updateNoPosition();
+
+        const rect = yesBtn.getBoundingClientRect();
+        if (rect.width >= window.innerWidth && rect.height >= window.innerHeight) {
+            noBtn.disabled = true;
+        }
+    });
+
+yesBtn.addEventListener("click", () => {
+    document.body.innerHTML = `
+    <div style="
+        height: 100vh;
+        width: 100vw;
+        background: url('./serduszka.gif') center / cover no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    ">
+        <h1 style="
+            color: white;
+            font-size: 3rem;
+            text-shadow: 0 0 15px rgba(0,0,0,0.8);
+            padding: 20px;
+        ">
+            Teraz już utknęłaś ze mną na zawsze ❤️
+        </h1>
+    </div>
+    `;
+});
+</script>
+</body>
+</html>
